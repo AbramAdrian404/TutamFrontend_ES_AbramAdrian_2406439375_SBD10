@@ -1,25 +1,39 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
+const API = "https://tutam-backend-es-abram-adrian-24064.vercel.app"
+
 function App() {
   const [todos, setTodos] = useState([])
   const [text, setText] = useState("")
 
   const fetchTodos = async () => {
-    const res = await axios.get("http://localhost:5000/todos")
-    setTodos(res.data)
+    try {
+      const res = await axios.get(`${API}/todos`)
+      setTodos(res.data)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const addTodo = async () => {
     if (!text) return
-    await axios.post("http://localhost:5000/todos", { text })
-    setText("")
-    fetchTodos()
+    try {
+      await axios.post(`${API}/todos`, { text })
+      setText("")
+      fetchTodos()
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const deleteTodo = async (id) => {
-    await axios.delete(`http://localhost:5000/todos/${id}`)
-    fetchTodos()
+    try {
+      await axios.delete(`${API}/todos/${id}`)
+      fetchTodos()
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
